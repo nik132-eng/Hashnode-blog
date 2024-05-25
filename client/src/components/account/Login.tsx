@@ -37,7 +37,6 @@ const Login: React.FC<LoginUserProps> = ({ isUserAuthenticated }) => {
 
   const { setAccount, account } = useContext(DataContext) || {};
 
-  console.log("setAccount", account);
   const toggleSignup = () => {
     toggleAccount((prevAccount) =>
       prevAccount === "signup" ? "login" : "signup"

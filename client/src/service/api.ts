@@ -27,9 +27,6 @@ interface ExtendedAxiosRequestConfig extends InternalAxiosRequestConfig {
 const axiosInstance = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
   timeout: 10000,
-  headers: {
-    "Content-Type": "application/json",
-  },
 } as ExtendedAxiosRequestConfig);
 
 axiosInstance.interceptors.request.use(

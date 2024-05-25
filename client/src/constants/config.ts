@@ -1,3 +1,5 @@
+import { UploadFile } from "@mui/icons-material";
+
 export interface NotificationMessage {
     title: string;
     message: string;
@@ -37,5 +39,6 @@ export interface NotificationMessage {
   export const SERVICE_URLS: { [key: string]: ServiceURLConfig } = {
     userSignup: { url: '/signup', method: 'POST' },
     userLogin: { url: '/login', method: 'POST' },
+    uploadFile: { url: '/file/upload', method: 'POST'},
   };
   

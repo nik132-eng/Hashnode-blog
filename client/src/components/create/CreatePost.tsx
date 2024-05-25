@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useContext, FC } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
 import { styled, Box, TextareaAutosize, Button, InputBase, FormControl } from '@mui/material';
+import { AddCircle as Add } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
-
+import blogbanner from '../../../public/blogbanner.jpg'
 import { API } from '../../service/api';
 import { DataContext } from '../../App';
-import blogbanner from '../../../public/blogbanner.jpg'
 
 interface Post {
   title: string;
@@ -15,85 +15,6 @@ interface Post {
   categories: string;
   createdDate: Date;
 }
-
-const initialPost: Post = {
-  title: '',
-  description: '',
-  picture: '',
-  username: '',
-  categories: '',
-  createdDate: new Date()
-};
-
-interface CreatePostProps {
-
-}
-
-const CreatePost: FC<CreatePostProps> = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const [post, setPost] = useState<Post>(initialPost);
-  const [file, setFile] = useState<File | null>(null);
-  const account  = useContext(DataContext);
-
-  const url = post.picture ? post.picture : blogbanner;
-
-  useEffect(() => {
-    const getImage = async () => {
-      if (file) {
-        const data = new FormData();
-        data.append('name', file.name);
-        data.append('file', file);
-
-        const response = await API.uploadFile(data);
-        post.picture = response.data;
-      }
-    };
-
-    getImage();
-
-    post.categories = location.search?.split('=')[1] || 'All';
-    post.username = account?.account?.username ?? '';
-  }, [file]);
-
-  const savePost = async () => {
-    await API.createPost(post);
-    navigate('/');
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setPost({ ...post, [e.target.name]: e.target.value });
-  };
-
-  return (
-    <Container>
-      <label htmlFor="fileInput">
-        <Image src={url} alt="post" />
-      </label>
-      <input
-        type="file"
-        id="fileInput"
-        style={{ display: 'none' }}
-        onChange={(e) => setFile(e.target.files?.[0] || null)}
-      />
-
-      <StyledFormControl>
-        <InputTextField onChange={handleChange} name="title" placeholder="Title" />
-        <Button onClick={savePost} variant="contained" color="primary">
-          Publish
-        </Button>
-      </StyledFormControl>
-
-      <Textarea
-        minRows={5}
-        placeholder="Tell your story..."
-        name="description"
-        onChange={handleChange}
-      />
-    </Container>
-  );
-};
 
 const Container = styled(Box)(({ theme }) => ({
   margin: '50px 100px',
@@ -118,17 +39,93 @@ const InputTextField = styled(InputBase)`
   flex: 1;
   margin: 0 30px;
   font-size: 25px;
-  font-family: Arial, Helvetica, sans-serif;
 `;
 
 const Textarea = styled(TextareaAutosize)`
-  margin: 10px 0;
   width: 100%;
+  border: none;
+  margin-top: 50px;
   font-size: 18px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 10px;
-  font-family: Arial, Helvetica, sans-serif;
+  &:focus-visible {
+    outline: none;
+  }
 `;
+
+const initialPost: Post = {
+  title: '',
+  description: '',
+  picture: '',
+  username: '',
+  categories: '',
+  createdDate: new Date()
+};
+
+const CreatePost = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const [post, setPost] = useState<Post>(initialPost);
+  const [file, setFile] = useState<File | null>(null);
+  const account = useContext(DataContext);
+
+  const url = post.picture ? post.picture : blogbanner;
+  useEffect(() => {
+    const getImage = async () => {
+      if (file) {
+        const data = new FormData();
+        data.append('name', file.name);
+        data.append('file', file);
+
+        const response = await API.uploadFile(data);
+        setPost({ ...post, picture: response.data });
+      }
+    };
+    getImage();
+    setPost({ ...post, categories: location.search?.split('=')[1] || 'All', username: account?.account?.username || "" });
+  }, [file]);
+
+  const savePost = async () => {
+    await API.createPost(post);
+    navigate('/');
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setPost({ ...post, [e.target.name]: e.target.value });
+  };
+
+  const upload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target || !e.target.files) return;
+    const file = e.target.files[0];
+    console.log("🚀 ~ upload ~ file:", file)
+    setFile(file);
+  }
+
+  return (
+    <Container>
+      <Image src={url} alt="post" />
+
+      <StyledFormControl>
+        {/* <label htmlFor="fileInput">
+          <Add fontSize="large" color="action" />
+        </label>
+        <input
+          type="file"
+          id="fileInput"
+          style={{ display: "none" }}
+          onChange={upload}
+          /> */}
+        <InputTextField onChange={handleChange} name='title' placeholder="Title" />
+        <Button onClick={savePost} variant="contained" color="primary">Publish</Button>
+      </StyledFormControl>
+
+      <Textarea
+        minRows={5}
+        placeholder="Tell your story..."
+        name='description'
+        onChange={handleChange}
+      />
+    </Container>
+  );
+};
 
 export default CreatePost;
