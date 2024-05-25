@@ -68,21 +68,21 @@ const processResponse = (response: AxiosResponse): APIResponse => {
 
 const processError = (error: AxiosError): APIResponse => {
   if (error.response) {
-    console.log("ERROR IN RESPONSE: ", error.toJSON());
+    console.log("ERROR IN RESPONSE: ", JSON.stringify(error));
     return {
       isError: true,
       msg: API_NOTIFICATION_MESSAGES.responseFailure,
       code: error.response.status.toString(),
     };
   } else if (error.request) {
-    console.log("ERROR IN REQUEST: ", error.toJSON());
+    console.log("ERROR IN REQUEST: ", JSON.stringify(error));
     return {
       isError: true,
       msg: API_NOTIFICATION_MESSAGES.requestFailure,
       code: "",
     };
   } else {
-    console.log("ERROR IN SETUP: ", error.toJSON());
+    console.log("ERROR IN SETUP: ", JSON.stringify(error));
     return {
       isError: true,
       msg: API_NOTIFICATION_MESSAGES.networkError,
@@ -110,12 +110,6 @@ for (const [key, value] of Object.entries(SERVICE_URLS)) {
         | "json"
         | "text"
         | "stream",
-      headers: {
-        authorization: getAccessToken(),
-      },
-      params: {
-        TYPE: getType(value, body),
-      },
       onUploadProgress: function (progressEvent: AxiosProgressEvent) {
         if (showUploadProgress && progressEvent.total) {
           let percentCompleted = Math.round(
@@ -139,5 +133,5 @@ for (const [key, value] of Object.entries(SERVICE_URLS)) {
 
 export { API };
 
-declare function getAccessToken(): string;
-declare function getType(value: any, body: any): string;
+// declare function getAccessToken(): string;
+// declare function getType(value: any, body: any): string;

@@ -1,30 +1,33 @@
 import { Box, Button, TextField, Typography, styled } from "@mui/material";
 import Logo from "../../../public/hashnode.png";
 import { useState, FC, ChangeEvent } from "react";
-import { API } from "../../service/api"
+import { API } from "../../service/api";
 
 const signupInitValues = {
-  name: '',
-  username: '',
-  password: ''
-}
+  name: "",
+  username: "",
+  password: "",
+};
 const Login: FC = () => {
   const [account, setAccount] = useState<"login" | "signup">("login");
-const [signup, setSignup] = useState(signupInitValues);
+  const [signup, setSignup] = useState(signupInitValues);
 
   const toggleSignup = () => {
-    setAccount(prevAccount => (prevAccount === "signup" ? "login" : "signup"));
+    setAccount((prevAccount) =>
+      prevAccount === "signup" ? "login" : "signup"
+    );
   };
 
+  const onInputChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ): void => {
+    setSignup({ ...signupInitValues, [e.target.name]: e.target.value });
+  };
 
-    const onInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void  => {
-        setSignup( {...signupInitValues, [e.target.name]: e.target.value})
-    }
-
-    const signupUser =  async () => {
-     const res = await API.userSignup(signup);
-     console.log("res", res)
-    }
+  const signupUser = async () => {
+    const res = await API.userSignup(signup);
+    console.log("res", res);
+  };
 
   return (
     <Component>
@@ -32,11 +35,7 @@ const [signup, setSignup] = useState(signupInitValues);
         <Image src={Logo} alt="Logo" />
         {account === "login" ? (
           <Wrapper>
-            <TextField
-              id="email"
-              label="Enter Email"
-              variant="standard"
-            />
+            <TextField id="email" label="Enter Email" variant="standard" />
             <TextField
               id="password"
               label="Enter Password"
@@ -64,7 +63,6 @@ const [signup, setSignup] = useState(signupInitValues);
               variant="standard"
               name="email"
               onChange={(e) => onInputChange(e)}
-
             />
             <TextField
               id="password"
@@ -74,7 +72,9 @@ const [signup, setSignup] = useState(signupInitValues);
               name="passowrd"
               onChange={(e) => onInputChange(e)}
             />
-            <Button variant="contained" onClick={signupUser}>Signup</Button>
+            <Button variant="contained" onClick={signupUser}>
+              Signup
+            </Button>
             <Typography style={{ textAlign: "center" }}>OR</Typography>
             <Button variant="text" onClick={toggleSignup}>
               Existing Account
@@ -112,6 +112,7 @@ const Wrapper = styled(Box)`
   & > button,
   & > p {
     margin-top: 20px;
+    width: 100%
   }
 `;
 
