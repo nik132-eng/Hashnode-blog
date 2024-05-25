@@ -1,13 +1,30 @@
 import { Box, Button, TextField, Typography, styled } from "@mui/material";
-import Logo from "../../public/hashnode.png";
-import { useState, FC } from "react";
+import Logo from "../../../public/hashnode.png";
+import { useState, FC, ChangeEvent } from "react";
+import { API } from "../../service/api"
 
+const signupInitValues = {
+  name: '',
+  username: '',
+  password: ''
+}
 const Login: FC = () => {
   const [account, setAccount] = useState<"login" | "signup">("login");
+const [signup, setSignup] = useState(signupInitValues);
 
   const toggleSignup = () => {
     setAccount(prevAccount => (prevAccount === "signup" ? "login" : "signup"));
   };
+
+
+    const onInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void  => {
+        setSignup( {...signupInitValues, [e.target.name]: e.target.value})
+    }
+
+    const signupUser =  async () => {
+     const res = await API.userSignup(signup);
+     console.log("res", res)
+    }
 
   return (
     <Component>
@@ -38,19 +55,26 @@ const Login: FC = () => {
               id="username"
               label="Username"
               variant="standard"
+              name="name"
+              onChange={(e) => onInputChange(e)}
             />
             <TextField
               id="email"
               label="Email"
               variant="standard"
+              name="email"
+              onChange={(e) => onInputChange(e)}
+
             />
             <TextField
               id="password"
               label="Password"
               variant="standard"
               type="password"
+              name="passowrd"
+              onChange={(e) => onInputChange(e)}
             />
-            <Button variant="contained">Signup</Button>
+            <Button variant="contained" onClick={signupUser}>Signup</Button>
             <Typography style={{ textAlign: "center" }}>OR</Typography>
             <Button variant="text" onClick={toggleSignup}>
               Existing Account
