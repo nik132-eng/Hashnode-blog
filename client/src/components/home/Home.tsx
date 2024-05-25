@@ -1,6 +1,6 @@
 import { Grid } from '@mui/material';
 import Banner from '../banner/Banner';
-import Categories from './categories';
+import Categories from './Categories';
 
 const Home = () => {
 

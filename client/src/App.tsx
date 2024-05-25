@@ -11,6 +11,7 @@ import {
 } from "react-router-dom";
 import Home from "./components/home/Home";
 import Header from "./components/header/Header";
+import CreatePost from "./components/create/CreatePost";
 
 interface AccountType {
   name: string;
@@ -60,6 +61,11 @@ function App() {
             <Route path='/' element={<PrivateRoute isAuthenticated={isAuthenticated} />} >
               <Route path='/' element={<Home />} />
             </Route>
+
+            <Route path='/create' element={<PrivateRoute isAuthenticated={isAuthenticated} />} >
+              <Route path='/create' element={<CreatePost />} />
+            </Route>
+            
             </Routes>
           </Box>
         </BrowserRouter>
