@@ -1,9 +1,13 @@
 import express from 'express'
 import User from '../model/user.js'
+import bcrypt from 'bcrypt';
 
-export const signupUser = async (req, res) => {
+
+export const signupUser = async (request, res) => {
     try{
-        const user = request.body;
+        const hashedPassword = await bcrypt.hash(request.body.password, 10);
+
+        const user = { name: request.body.name, username: request.body.username, password: hashedPassword }
         const newUser = new User(user);
         await newUser.save();
 

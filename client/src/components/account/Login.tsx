@@ -1,6 +1,6 @@
 import { Box, Button, TextField, Typography, styled } from "@mui/material";
 import Logo from "../../../public/hashnode.png";
-import { useState, FC, ChangeEvent } from "react";
+import { useState, FC, ChangeEvent, useEffect } from "react";
 import { API } from "../../service/api";
 
 const signupInitValues = {
@@ -9,11 +9,15 @@ const signupInitValues = {
   password: "",
 };
 const Login: FC = () => {
-  const [account, setAccount] = useState<"login" | "signup">("login");
+  const [account, toggleAccount] = useState<"login" | "signup">("login");
   const [signup, setSignup] = useState(signupInitValues);
 
+  const [error, showError] = useState('');
+
+
+
   const toggleSignup = () => {
-    setAccount((prevAccount) =>
+    toggleAccount((prevAccount) =>
       prevAccount === "signup" ? "login" : "signup"
     );
   };
@@ -21,26 +25,38 @@ const Login: FC = () => {
   const onInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ): void => {
-    setSignup({ ...signupInitValues, [e.target.name]: e.target.value });
+    setSignup((prevSignup) => ({
+      ...prevSignup,
+      [e.target.name]: e.target.value
+    }));
   };
 
   const signupUser = async () => {
-    const res = await API.userSignup(signup);
-    console.log("res", res);
-  };
+    console.log("Signup value",signup )
+    let response = await API.userSignup(signup);
+    if (response.isSuccess) {
+        showError('');
+        setSignup(signupInitValues);
+        toggleAccount('login');
+    } else {
+        showError('Something went wrong! please try again later');
+    }
+}
 
   return (
     <Component>
       <Box>
         <Image src={Logo} alt="Logo" />
+        {error && <Error>{error}</Error>}
         {account === "login" ? (
           <Wrapper>
-            <TextField id="email" label="Enter Email" variant="standard" />
+            <TextField id="email" label="Enter Email" variant="standard" name="username"/>
             <TextField
               id="password"
               label="Enter Password"
               variant="standard"
               type="password"
+              name="password"
             />
             <Button variant="contained">Login</Button>
             <Typography style={{ textAlign: "center" }}>OR</Typography>
@@ -61,7 +77,7 @@ const Login: FC = () => {
               id="email"
               label="Email"
               variant="standard"
-              name="email"
+              name="username"
               onChange={(e) => onInputChange(e)}
             />
             <TextField
@@ -69,7 +85,7 @@ const Login: FC = () => {
               label="Password"
               variant="standard"
               type="password"
-              name="passowrd"
+              name="password"
               onChange={(e) => onInputChange(e)}
             />
             <Button variant="contained" onClick={signupUser}>
@@ -116,4 +132,13 @@ const Wrapper = styled(Box)`
   }
 `;
 
+const Error = styled(Typography)`
+    font-size: 10px;
+    color: #ff6161;
+    margin-top: 10px;
+    font-weight: 600;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`
 export default Login;

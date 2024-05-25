@@ -36,5 +36,6 @@ export interface NotificationMessage {
   // Define the SERVICE_URLS constant with the correct types
   export const SERVICE_URLS: { [key: string]: ServiceURLConfig } = {
     userSignup: { url: '/signup', method: 'POST' },
+    userLogin: { url: '/login', method: 'POST' },
   };
   
