@@ -43,8 +43,17 @@ export const deletePost = async (request, response) => {
 
 export const getPost = async (request, response) => {
     try {
-        const post = await Post.findById(request.params.id);
+        const post = await Post.findById(request.query.query);
+        response.status(200).json(post);
+    } catch (error) {
+        response.status(500).json(error)
+    }
+}
 
+
+export const getPostById = async (request, response) => {
+    try {
+        const post = await Post.findById(request.query);
         response.status(200).json(post);
     } catch (error) {
         response.status(500).json(error)
@@ -54,7 +63,6 @@ export const getPost = async (request, response) => {
 export const getAllPosts = async (request, response) => {
     let username = request.query.username;
     let category = request.query.category;
-    console.log("🚀 ~ getAllPosts ~ category:",category)
     let posts;
     try {
         if(username) 

@@ -16,7 +16,7 @@ router.get('/file/:filename', getImage);
 router.post('/create', authenticateToken, createPost);
 
 
-router.get('/post/:id', authenticateToken, getPost);
+router.get('/post', authenticateToken, getPost);
 router.get('/posts', authenticateToken, getAllPosts);
 
 export default router;

@@ -20,7 +20,7 @@ export const getType = (value: ServiceURLConfig, body: any) => {
   if (value.params) {
     return { params: body }
   } else if (value.query) {
-    if (typeof body === 'object') {
+    if (typeof body === 'object' && body._id) {
       return { query: body._id }
     } else {
       return { query: body }
