@@ -23,10 +23,11 @@ const loginInitialValues = {
 };
 
 export interface LoginUserProps {
-  isUserAuthenticated: Dispatch<SetStateAction<boolean>>;
+  isUserAuthenticated: boolean;
+  setIsAuthenticated: Dispatch<SetStateAction<boolean>>;
 }
 
-const Login: React.FC<LoginUserProps> = ({ isUserAuthenticated }) => {
+const Login: React.FC<LoginUserProps> = ({ isUserAuthenticated , setIsAuthenticated}) => {
   const [login, setLogin] = useState(loginInitialValues);
 
   const [taccount, toggleAccount] = useState<"login" | "signup">("login");
@@ -88,7 +89,7 @@ const Login: React.FC<LoginUserProps> = ({ isUserAuthenticated }) => {
         name: response.data.name,
         username: response.data.username,
       });
-      isUserAuthenticated(true);
+      setIsAuthenticated(true);
 
       navigate("/");
     } else {

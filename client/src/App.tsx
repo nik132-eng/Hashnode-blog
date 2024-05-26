@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import "./App.css";
 import Login from "./components/account/Login";
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 import {
   BrowserRouter,
   Routes,
@@ -12,8 +12,9 @@ import {
 import Home from "./components/home/Home";
 import Header from "./components/header/Header";
 import CreatePost from "./components/create/CreatePost";
+import DetailView from "./components/details/DetailView";
 
-interface AccountType {
+export interface AccountType {
   name: string;
   username: string;
 }
@@ -30,12 +31,14 @@ interface PrivateRouteProps {
 }
 
 const PrivateRoute = ({ isAuthenticated, ...props }: PrivateRouteProps) => {
-  const token = sessionStorage.getItem('accessToken');
-  return isAuthenticated && token ? 
+  return isAuthenticated ? (
     <>
       <Header />
       <Outlet />
-    </> : <Navigate replace to='/account' />
+    </>
+  ) : (
+    <Navigate replace to='/account' />
+  );
 };
 
 function App() {
@@ -43,7 +46,18 @@ function App() {
     name: "",
     username: "",
   });
-  const [isAuthenticated, isUserAuthenticated] = useState<boolean>(false);
+
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+    return sessionStorage.getItem("accessToken") !== null;
+  });
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      sessionStorage.setItem("isAuthenticated", "true");
+    } else {
+      sessionStorage.removeItem("isAuthenticated");
+    }
+  }, [isAuthenticated]);
 
   return (
     <>
@@ -56,16 +70,35 @@ function App() {
         <BrowserRouter>
           <Box style={{ marginTop: 64 }}>
             <Routes>
-            <Route path='/account' element={<Login isUserAuthenticated={isUserAuthenticated} />} />
-            
-            <Route path='/' element={<PrivateRoute isAuthenticated={isAuthenticated} />} >
-              <Route path='/' element={<Home />} />
-            </Route>
+              <Route
+                path='/account'
+                element={
+                  <Login
+                    isUserAuthenticated={isAuthenticated}
+                    setIsAuthenticated={setIsAuthenticated}
+                  />
+                }
+              />
+              <Route
+                path='/'
+                element={<PrivateRoute isAuthenticated={isAuthenticated} />}
+              >
+                <Route path='/' element={<Home />} />
+              </Route>
 
-            <Route path='/create' element={<PrivateRoute isAuthenticated={isAuthenticated} />} >
-              <Route path='/create' element={<CreatePost />} />
-            </Route>
-            
+              <Route
+                path='/create'
+                element={<PrivateRoute isAuthenticated={isAuthenticated} />}
+              >
+                <Route path='/create' element={<CreatePost />} />
+              </Route>
+
+              <Route
+                path='/details/:id'
+                element={<PrivateRoute isAuthenticated={isAuthenticated} />}
+              >
+                <Route path='/details/:id' element={<DetailView />} />
+              </Route>
             </Routes>
           </Box>
         </BrowserRouter>

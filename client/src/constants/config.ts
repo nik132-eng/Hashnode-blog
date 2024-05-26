@@ -1,4 +1,4 @@
-import { UploadFile } from "@mui/icons-material";
+// import { UploadFile } from "@mui/icons-material";
 
 export interface NotificationMessage {
     title: string;
@@ -45,5 +45,6 @@ export interface NotificationMessage {
     uploadFile: { url: '/file/upload', method: 'POST'},
     createPost: { url: 'create', method: 'POST' },
     getAllPosts: { url: '/posts', method: 'GET', params: true },
+    getPostById: { url: '/post', method: 'GET', query: true },
   };
   

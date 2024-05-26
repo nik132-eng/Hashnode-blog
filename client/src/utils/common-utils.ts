@@ -17,7 +17,6 @@ export const setRefreshToken = (refreshToken: string) => {
 }
 
 export const getType = (value: ServiceURLConfig, body: any) => {
-  console.log("🚀 ~ getType ~ value:", value, body)
   if (value.params) {
     return { params: body }
   } else if (value.query) {

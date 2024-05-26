@@ -111,7 +111,7 @@ for (const [key, value] of Object.entries(SERVICE_URLS)) {
       headers: {
           authorization: getAccessToken(),
       },
-      ...getType(value, body),
+      params: getType(value, body),
       onUploadProgress: function (progressEvent: AxiosProgressEvent) {
         if (showUploadProgress && progressEvent.total) {
           let percentCompleted = Math.round(
