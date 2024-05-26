@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { styled, Box, TextareaAutosize, Button, InputBase, FormControl } from '@mui/material';
 // import { AddCircle as Add } from '@mui/icons-material';
@@ -6,6 +6,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import blogbanner from '../../../public/blogbanner.jpg'
 import { API } from '../../service/api';
 import { DataContext } from '../../App';
+// import { DataContext } from '../../App';
 
 interface Post {
   title: string;
@@ -65,7 +66,8 @@ const CreatePost = () => {
   const location = useLocation();
 
   const [post, setPost] = useState<Post>(initialPost);
-  const [file, setFile] = useState<File | null>(null);
+  // [file, setfile]
+  const [file] = useState<File | null>(null);
   const account = useContext(DataContext);
 
   const url = post.picture ? post.picture : blogbanner;
