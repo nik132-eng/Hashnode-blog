@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 
 import { styled, Box, TextareaAutosize, Button, InputBase, FormControl } from '@mui/material';
-import { AddCircle as Add } from '@mui/icons-material';
+// import { AddCircle as Add } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import blogbanner from '../../../public/blogbanner.jpg'
 import { API } from '../../service/api';
@@ -93,12 +93,11 @@ const CreatePost = () => {
     setPost({ ...post, [e.target.name]: e.target.value });
   };
 
-  const upload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target || !e.target.files) return;
-    const file = e.target.files[0];
-    console.log("🚀 ~ upload ~ file:", file)
-    setFile(file);
-  }
+  // const upload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (!e.target || !e.target.files) return;
+  //   const file = e.target.files[0];
+  //   setFile(file);
+  // }
 
   return (
     <Container>

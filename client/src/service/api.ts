@@ -9,6 +9,7 @@ import {
   NotificationMessage,
   SERVICE_URLS,
 } from "../constants/config";
+import { getAccessToken, getType } from "../utils/common-utils";
 
 interface APIResponse {
   isSuccess?: boolean;
@@ -107,6 +108,10 @@ for (const [key, value] of Object.entries(SERVICE_URLS)) {
         | "json"
         | "text"
         | "stream",
+      headers: {
+          authorization: getAccessToken(),
+      },
+      ...getType(value, body),
       onUploadProgress: function (progressEvent: AxiosProgressEvent) {
         if (showUploadProgress && progressEvent.total) {
           let percentCompleted = Math.round(
@@ -129,6 +134,3 @@ for (const [key, value] of Object.entries(SERVICE_URLS)) {
 }
 
 export { API };
-
-// declare function getAccessToken(): string;
-// declare function getType(value: any, body: any): string;

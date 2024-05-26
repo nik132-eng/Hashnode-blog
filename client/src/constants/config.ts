@@ -33,6 +33,9 @@ export interface NotificationMessage {
     url: string;
     method: 'POST' | 'GET' | 'PUT' | 'DELETE';
     responseType?: ResponseType;
+    params?: any; 
+    query?: any; 
+    TYPE?: any;
   }
   
   // Define the SERVICE_URLS constant with the correct types
@@ -40,5 +43,7 @@ export interface NotificationMessage {
     userSignup: { url: '/signup', method: 'POST' },
     userLogin: { url: '/login', method: 'POST' },
     uploadFile: { url: '/file/upload', method: 'POST'},
+    createPost: { url: 'create', method: 'POST' },
+    getAllPosts: { url: '/posts', method: 'GET', params: true },
   };
   
