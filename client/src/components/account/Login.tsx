@@ -27,7 +27,7 @@ export interface LoginUserProps {
   setIsAuthenticated: Dispatch<SetStateAction<boolean>>;
 }
 
-const Login: React.FC<LoginUserProps> = ({ isUserAuthenticated , setIsAuthenticated}) => {
+const Login: React.FC<LoginUserProps> = ({ setIsAuthenticated}) => {
   const [login, setLogin] = useState(loginInitialValues);
 
   const [taccount, toggleAccount] = useState<"login" | "signup">("login");
@@ -36,7 +36,7 @@ const Login: React.FC<LoginUserProps> = ({ isUserAuthenticated , setIsAuthentica
   const [error, showError] = useState("");
   const navigate = useNavigate();
 
-  const { setAccount, account } = useContext(DataContext) || {};
+  const { setAccount } = useContext(DataContext)!;
 
   const toggleSignup = () => {
     toggleAccount((prevAccount) =>
@@ -73,7 +73,6 @@ const Login: React.FC<LoginUserProps> = ({ isUserAuthenticated , setIsAuthentica
 
   const loginUser = async () => {
     let response = await API.userLogin(login);
-    console.log("responseresponse", response);
     if (response.isSuccess) {
       showError("");
 
@@ -85,10 +84,12 @@ const Login: React.FC<LoginUserProps> = ({ isUserAuthenticated , setIsAuthentica
         "refreshToken",
         `Bearer ${response.data.refreshToken}`
       );
-      setAccount?.({
-        name: response.data.name,
-        username: response.data.username,
-      });
+        const newAccount = {
+          name: response.data.name || "",
+          username: response.data.username || "",
+        };
+        setAccount(newAccount);
+        localStorage.setItem("account", JSON.stringify(newAccount));
       setIsAuthenticated(true);
 
       navigate("/");

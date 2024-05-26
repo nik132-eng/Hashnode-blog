@@ -1,11 +1,11 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { Box, Typography, styled } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import blogbanner from '../../../public/blogbanner.jpg'
 
 import { API } from '../../service/api';
-import { DataContext } from '../../App';
+// import { DataContext } from '../../App';
 
 const Container = styled(Box)(({ theme }) => ({
     margin: '50px 100px',
@@ -54,8 +54,10 @@ const DetailView: React.FC = () => {
     const url = blogbanner;
 
     const [post, setPost] = useState<any | null>(null);
-    const account = useContext(DataContext);
-
+    // const account = useContext(DataContext);
+    const accountString = localStorage.getItem("account");
+    const account = accountString ? JSON.parse(accountString) : null;
+  
     const navigate = useNavigate();
     const { id } = useParams<any>();
 
@@ -86,7 +88,7 @@ const DetailView: React.FC = () => {
           <>
             <Image src={post.picture || url} alt="post" />
             <Box style={{ float: 'right' }}>
-              {account?.account?.username === post.username && (
+              {account?.username === post.username && (
                 <>
                   <Link to={`/update/${post._id}`}><EditIcon color="primary" /></Link>
                   <DeleteIcon onClick={deleteBlog} color="error" />
