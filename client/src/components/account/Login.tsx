@@ -110,7 +110,7 @@ const Login: React.FC<LoginUserProps> = ({ setIsAuthenticated }) => {
               value={login.username}
               onChange={(e) => onValueChange(e)}
               name="username"
-              label="Enter Username"
+              label="Enter Email"
             />
             <TextField
               variant="standard"
