@@ -1,7 +1,7 @@
 import grid from 'gridfs-stream';
 import mongoose from 'mongoose';
 
-const url = 'http://localhost:8000';
+const url = process.env.REACT_APP_API_URL;
 
 let gfs, gridfsBucket;
 const conn = mongoose.connection;
@@ -24,11 +24,10 @@ export const uploadImage = (request, response) => {
 }
 
 export const getImage = async (request, response) => {
-    console.log("🚀 ~ getImage ~ request:", request.params.filename)
     const param = request.params.filename;
+    // TODO need to fetch
     try {   
         const file = await gfs.files.findOne({ filename: '1716666002190-blog-banner.jpg' });
-        console.log("🚀 ~ getImage ~ file:", file)
         const readStream = gridfsBucket.openDownloadStream(file._id);
         readStream.pipe(response);
     } catch (error) {
