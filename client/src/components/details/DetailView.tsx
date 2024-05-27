@@ -90,8 +90,10 @@ const DetailView: React.FC = () => {
             <Box style={{ float: 'right' }}>
               {account?.username === post.username && (
                 <>
-                  <Link to={`/update/${post._id}`}><EditIcon color="primary" /></Link>
-                  <DeleteIcon onClick={deleteBlog} color="error" />
+                  <Link to={`/update/${post._id}`} style={{ cursor: 'pointer' }}>
+                    <EditIcon color="primary" />
+                  </Link>
+                  <DeleteIcon onClick={deleteBlog} color="error" style={{ cursor: 'pointer' }} />
                 </>
               )}
             </Box>
