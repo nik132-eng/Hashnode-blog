@@ -27,7 +27,7 @@ export interface LoginUserProps {
   setIsAuthenticated: Dispatch<SetStateAction<boolean>>;
 }
 
-const Login: React.FC<LoginUserProps> = ({ setIsAuthenticated}) => {
+const Login: React.FC<LoginUserProps> = ({ setIsAuthenticated }) => {
   const [login, setLogin] = useState(loginInitialValues);
 
   const [taccount, toggleAccount] = useState<"login" | "signup">("login");
@@ -84,12 +84,12 @@ const Login: React.FC<LoginUserProps> = ({ setIsAuthenticated}) => {
         "refreshToken",
         `Bearer ${response.data.refreshToken}`
       );
-        const newAccount = {
-          name: response.data.name || "",
-          username: response.data.username || "",
-        };
-        setAccount(newAccount);
-        localStorage.setItem("account", JSON.stringify(newAccount));
+      const newAccount = {
+        name: response.data.name || "",
+        username: response.data.username || "",
+      };
+      setAccount(newAccount);
+      localStorage.setItem("account", JSON.stringify(newAccount));
       setIsAuthenticated(true);
 
       navigate("/");
@@ -131,26 +131,26 @@ const Login: React.FC<LoginUserProps> = ({ setIsAuthenticated}) => {
         ) : (
           <Wrapper>
             <TextField
-              id="username"
-              label="Username"
               variant="standard"
+              value={signup.name}
+              onChange={(e) => onInputChange(e)}
               name="name"
-              onChange={(e) => onInputChange(e)}
+              label="Username"
             />
             <TextField
-              id="email"
-              label="Email"
               variant="standard"
+              value={signup.username}
+              onChange={(e) => onInputChange(e)}
               name="username"
-              onChange={(e) => onInputChange(e)}
+              label="Email"
             />
             <TextField
-              id="password"
-              label="Password"
               variant="standard"
-              type="password"
-              name="password"
+              value={signup.password}
               onChange={(e) => onInputChange(e)}
+              name="password"
+              label="Password"
+              type="password"
             />
             <Button variant="contained" onClick={signupUser}>
               Signup

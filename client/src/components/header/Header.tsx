@@ -24,6 +24,7 @@ const Header: FC<HeaderProps> = () => {
   const navigate = useNavigate();
 
   const logout = async () => {
+    localStorage.clear();
     navigate('/account', { replace: true });
   };
 

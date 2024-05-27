@@ -104,7 +104,7 @@ const DetailView: React.FC = () => {
               <Typography style={{ marginLeft: 'auto' }}>{new Date(post.createdDate).toDateString()}</Typography>
             </Author>
       
-            <div style={{ overflowWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{post.description}</div>
+            <Typography style={{ overflowWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{post.description}</Typography>
           </>
         )}
       </Container>      
