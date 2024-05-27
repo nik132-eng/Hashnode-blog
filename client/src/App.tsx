@@ -14,6 +14,8 @@ import Header from "./components/header/Header";
 import CreatePost from "./components/create/CreatePost";
 import DetailView from "./components/details/DetailView";
 import Update from "./components/create/Update";
+import About from "./components/about/about";
+import Contact from "./components/contact/contact";
 
 export interface AccountType {
   name: string;
@@ -31,7 +33,7 @@ interface PrivateRouteProps {
   isAuthenticated: boolean;
 }
 
-const PrivateRoute = ({ isAuthenticated, ...props }: PrivateRouteProps) => {
+const PrivateRoute = ({ isAuthenticated }: PrivateRouteProps) => {
   return isAuthenticated ? (
     <>
       <Header />
@@ -107,6 +109,14 @@ function App() {
               >
                 <Route path='/update/:id' element={<Update />} />
               </Route>
+
+              <Route path='/about' element={<PrivateRoute isAuthenticated={isAuthenticated} />} >
+              <Route path='/about' element={<About />} />
+            </Route>
+
+            <Route path='/contact' element={<PrivateRoute isAuthenticated={isAuthenticated} />} >
+              <Route path='/contact' element={<Contact />} />
+            </Route>
             </Routes>
           </Box>
         </BrowserRouter>
